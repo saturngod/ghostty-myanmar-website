@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ghostty Myanmar — Myanmar Unicode Terminal for macOS</title>
-  <meta name="description" content="A fork of the Ghostty terminal with Myanmar (Burmese) Unicode support for macOS.">
+  <title>Ghostty Myanmar — Myanmar Unicode Terminal for macOS and Linux</title>
+  <meta name="description" content="A fork of the Ghostty terminal with Myanmar (Burmese) Unicode support for macOS and Linux.">
   <link rel="canonical" href="https://ghostty.myanmars.app/">
   <meta name="robots" content="index, follow">
 
@@ -13,8 +13,8 @@
   <meta property="og:site_name" content="Ghostty Myanmar">
   <meta property="og:locale" content="en_US">
   <meta property="og:url" content="https://ghostty.myanmars.app/">
-  <meta property="og:title" content="Ghostty Myanmar — Myanmar Unicode Terminal for macOS">
-  <meta property="og:description" content="A fork of the Ghostty terminal with Myanmar (Burmese) Unicode support for macOS.">
+  <meta property="og:title" content="Ghostty Myanmar — Myanmar Unicode Terminal for macOS and Linux">
+  <meta property="og:description" content="A fork of the Ghostty terminal with Myanmar (Burmese) Unicode support for macOS and Linux.">
   <meta property="og:image" content="https://ghostty.myanmars.app/screenshot.png">
   <meta property="og:image:secure_url" content="https://ghostty.myanmars.app/screenshot.png">
   <meta property="og:image:type" content="image/png">
@@ -24,8 +24,8 @@
 
   <!-- Large image preview on X. -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ghostty Myanmar — Myanmar Unicode Terminal for macOS">
-  <meta name="twitter:description" content="A fork of the Ghostty terminal with Myanmar (Burmese) Unicode support for macOS.">
+  <meta name="twitter:title" content="Ghostty Myanmar — Myanmar Unicode Terminal for macOS and Linux">
+  <meta name="twitter:description" content="A fork of the Ghostty terminal with Myanmar (Burmese) Unicode support for macOS and Linux.">
   <meta name="twitter:image" content="https://ghostty.myanmars.app/screenshot.png">
   <meta name="twitter:image:alt" content="Ghostty terminal window showing Myanmar text in commands, output, and file names.">
   <meta name="theme-color" content="#0f0f11">
@@ -67,6 +67,9 @@
       border-radius: 10px;
       box-shadow: 0 0 0 1px #2a2a2e;
     }
+    .note { margin: 0; color: #a6a6ad; font-size: 13px; text-align: center; }
+    .source { color: #a6a6ad; font-size: 14px; text-underline-offset: 4px; }
+    a:focus-visible { outline: 2px solid #8c9cff; outline-offset: 4px; }
     .my { font-family: "Noto Sans Myanmar", sans-serif; }
     .buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
     .btn {
@@ -87,9 +90,12 @@
 
   <img class="shot" src="screenshot.png" width="1032" height="602" alt="Ghostty terminal window showing Myanmar text in commands, output, and file names.">
 
-  <div class="buttons">
-    <a class="btn primary" href="Ghostty.dmg" download>Download</a>
-    <a class="btn" href="https://github.com/saturngod/ghostty">GitHub</a>
-  </div>
+  <nav class="buttons" aria-label="Downloads">
+    <a class="btn primary" href="download/Ghostty-1.4.1-dev+3dcc4897c-macos-arm64.dmg" download>macOS · DMG</a>
+    <a class="btn" href="download/ghostty_1.4.1~dev+3dcc4897c-1_arm64.deb" download>Linux · DEB</a>
+    <a class="btn" href="download/Ghostty-1.4.1-dev+3dcc4897c-aarch64.AppImage" download>Linux · AppImage</a>
+  </nav>
+  <p class="note">All downloads are for ARM64 (Apple silicon / AArch64).</p>
+  <a class="source" href="https://github.com/saturngod/ghostty">View on GitHub</a>
 </body>
 </html>
