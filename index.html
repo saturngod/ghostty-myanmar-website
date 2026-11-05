@@ -62,40 +62,149 @@
       font-size: 15px; font-weight: 600;
     }
     .brand img { width: 28px; height: 28px; }
-    .shot {
-      width: 100%; max-width: 760px; height: auto; display: block;
-      border-radius: 10px;
-      box-shadow: 0 0 0 1px #2a2a2e;
+    .character-art {
+      position: relative;
+      width: 100%; max-width: 760px;
+      aspect-ratio: 1032 / 602;
+      overflow: hidden;
+      background: radial-gradient(ellipse at center, #191a2c 0%, var(--bg) 72%);
     }
-    .note { margin: 0; color: #a6a6ad; font-size: 13px; text-align: center; }
+    .character-art canvas { width: 100%; height: 100%; display: block; }
     .source { color: #a6a6ad; font-size: 14px; text-underline-offset: 4px; }
     a:focus-visible { outline: 2px solid #8c9cff; outline-offset: 4px; }
     .my { font-family: "Noto Sans Myanmar", sans-serif; }
-    .buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .btn {
-      color: var(--text); text-decoration: none; font-size: 16px;
-      padding: 10px 34px; border-radius: 6px; border: 1px solid var(--line);
-      transition: background .15s;
+    .downloads {
+      width: 100%; max-width: 680px;
+      display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 16px;
     }
-    .btn:hover { background: rgba(255,255,255,.05); }
-    .btn.primary { border-color: var(--blue); }
-    .btn.primary:hover { background: rgba(53,81,243,.12); }
-    @media (max-width: 480px) {
-      .btn { flex: 1; text-align: center; padding: 10px 16px; }
+    .download-group {
+      min-width: 0; padding: 20px; border: 1px solid #303036;
+      border-radius: 12px; background: #151518;
+    }
+    .download-group h2 { margin: 0 0 6px; font-size: 17px; font-weight: 600; }
+    .download-group p { margin: 0 0 20px; color: #a6a6ad; font-size: 12px; line-height: 1.5; }
+    .download-row { display: flex; align-items: center; gap: 8px; }
+    .download-row + .download-row { margin-top: 10px; }
+    .architecture { flex: 1; font-size: 12px; color: #c5c5cd; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--text); text-decoration: none; font-size: 13px;
+      min-height: 40px; padding: 9px 12px; border-radius: 6px;
+      border: 1px solid var(--line); transition: background .15s;
+      white-space: nowrap;
+    }
+    .btn:hover { background: rgba(255,255,255,.07); }
+    .btn.primary { border-color: var(--blue); background: #283dbe; width: 100%; }
+    .btn.primary:hover { background: var(--blue); }
+    @media (max-width: 600px) {
+      .downloads { grid-template-columns: 1fr; max-width: 380px; }
+      .download-group { padding: 18px; }
     }
   </style>
 </head>
 <body>
   <h1 class="brand"><img src="logo.png" alt="" width="28" height="28"> Ghostty <span class="my" lang="my">မြန်မာ</span></h1>
 
-  <img class="shot" src="screenshot.png" width="1032" height="602" alt="Ghostty terminal window showing Myanmar text in commands, output, and file names.">
+  <div class="character-art">
+    <canvas id="myanmar-ghost" role="img" aria-label="A floating ghost made of Myanmar characters." lang="my">မြန်မာ — a ghost made of Myanmar characters.</canvas>
+  </div>
 
-  <nav class="buttons" aria-label="Downloads">
-    <a class="btn primary" href="download/Ghostty-1.4.1-dev+3dcc4897c-macos-arm64.dmg" download>macOS · DMG</a>
-    <a class="btn" href="download/ghostty_1.4.1~dev+3dcc4897c-1_arm64.deb" download>Linux · DEB</a>
-    <a class="btn" href="download/Ghostty-1.4.1-dev+3dcc4897c-aarch64.AppImage" download>Linux · AppImage</a>
+  <nav class="downloads" aria-label="Downloads">
+    <section class="download-group" aria-labelledby="macos-heading">
+      <h2 id="macos-heading">macOS</h2>
+      <p>Download the disk image to install.</p>
+      <a class="btn primary" href="download/Ghostty.dmg" download>Download DMG</a>
+    </section>
+    <section class="download-group" aria-labelledby="linux-heading">
+      <h2 id="linux-heading">Linux</h2>
+      <p>Choose your processor and package.</p>
+      <div class="download-row">
+        <span class="architecture">AMD64<br><small>Intel / AMD</small></span>
+        <a class="btn" href="download/ghostty_amd64.deb" download aria-label="Download Linux AMD64 DEB">DEB</a>
+        <a class="btn" href="download/Ghostty-amd64.AppImage" download aria-label="Download Linux AMD64 AppImage">AppImage</a>
+      </div>
+      <div class="download-row">
+        <span class="architecture">ARM64<br><small>AArch64</small></span>
+        <a class="btn" href="download/ghostty_arm64.deb" download aria-label="Download Linux ARM64 DEB">DEB</a>
+        <a class="btn" href="download/Ghostty-arm64.AppImage" download aria-label="Download Linux ARM64 AppImage">AppImage</a>
+      </div>
+    </section>
   </nav>
-  <p class="note">All downloads are for ARM64 (Apple silicon / AArch64).</p>
   <a class="source" href="https://github.com/saturngod/ghostty">View on GitHub</a>
+  <script>
+    (() => {
+      const canvas = document.getElementById('myanmar-ghost');
+      const context = canvas.getContext('2d');
+      if (!context) return;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const letters = Array.from('ကခဂငစဆဇညတထဒနပဖဗမယရလဝသဟအ');
+      let paused = reducedMotion.matches;
+      let frame = 0;
+      let lastTime = 0;
+      let phase = 0;
+      let width = 0;
+      let height = 0;
+
+      function draw() {
+        context.clearRect(0, 0, width, height);
+        const columns = 64;
+        const cell = width / columns;
+        const rows = Math.floor(height / (cell * 1.25));
+        context.font = `${cell * 0.94}px "Noto Sans Myanmar", sans-serif`;
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < columns; col++) {
+            const x = (col - columns / 2) / 18;
+            const y = (row - rows / 2) / 13 - Math.sin(phase) * 0.055;
+            const sway = Math.sin(phase * 0.7 + y * 2) * 0.055;
+            const gx = x - sway;
+            const dome = gx * gx + (y + 0.22) ** 2 < 0.69 ** 2 && y < -0.2;
+            const hem = 0.69 + Math.cos(gx * 17 + phase * 2) * 0.065;
+            const body = Math.abs(gx) < 0.69 && y >= -0.22 && y < hem;
+            if (!dome && !body) continue;
+            const eye = ((gx - 0.25) / 0.12) ** 2 + ((y + 0.13) / 0.17) ** 2 < 1 ||
+              ((gx + 0.25) / 0.12) ** 2 + ((y + 0.13) / 0.17) ** 2 < 1;
+            if (eye) continue;
+            const light = 65 + 20 * Math.sin(gx * 2 - y * 2 + phase);
+            context.fillStyle = `hsl(${235 + y * 22}, 85%, ${light}%)`;
+            const index = (row * 7 + col * 11 + Math.floor(phase * 2)) % letters.length;
+            context.fillText(letters[index], (col + 0.5) * cell, (row + 0.5) * cell * 1.25);
+          }
+        }
+      }
+
+      function tick(time) {
+        if (time - lastTime >= 80) {
+          phase += lastTime ? Math.min(time - lastTime, 100) / 1000 : 0;
+          lastTime = time;
+          draw();
+        }
+        frame = requestAnimationFrame(tick);
+      }
+
+      function syncMotion() {
+        cancelAnimationFrame(frame);
+        lastTime = 0;
+        draw();
+        if (!paused && !document.hidden) frame = requestAnimationFrame(tick);
+      }
+
+      new ResizeObserver(() => {
+        const bounds = canvas.getBoundingClientRect();
+        width = bounds.width;
+        height = bounds.height;
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        draw();
+      }).observe(canvas);
+      reducedMotion.addEventListener('change', event => { paused = event.matches; syncMotion(); });
+      document.addEventListener('visibilitychange', syncMotion);
+      document.fonts.ready.then(draw);
+      syncMotion();
+    })();
+  </script>
 </body>
 </html>
