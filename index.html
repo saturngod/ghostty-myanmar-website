@@ -3,8 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ghostty Myanmar</title>
+  <title>Ghostty Myanmar — Myanmar Unicode Terminal for macOS</title>
   <meta name="description" content="A fork of the Ghostty terminal with Myanmar (Burmese) Unicode support for macOS.">
+  <link rel="canonical" href="https://ghostty.myanmars.app/">
+  <meta name="robots" content="index, follow">
+
+  <!-- Facebook, LinkedIn, and other Open Graph consumers. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ghostty Myanmar">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://ghostty.myanmars.app/">
+  <meta property="og:title" content="Ghostty Myanmar — Myanmar Unicode Terminal for macOS">
+  <meta property="og:description" content="A fork of the Ghostty terminal with Myanmar (Burmese) Unicode support for macOS.">
+  <meta property="og:image" content="https://ghostty.myanmars.app/screenshot.png">
+  <meta property="og:image:secure_url" content="https://ghostty.myanmars.app/screenshot.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1032">
+  <meta property="og:image:height" content="602">
+  <meta property="og:image:alt" content="Ghostty terminal window showing Myanmar text in commands, output, and file names.">
+
+  <!-- Large image preview on X. -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ghostty Myanmar — Myanmar Unicode Terminal for macOS">
+  <meta name="twitter:description" content="A fork of the Ghostty terminal with Myanmar (Burmese) Unicode support for macOS.">
+  <meta name="twitter:image" content="https://ghostty.myanmars.app/screenshot.png">
+  <meta name="twitter:image:alt" content="Ghostty terminal window showing Myanmar text in commands, output, and file names.">
   <meta name="theme-color" content="#0f0f11">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="logo.png">
@@ -16,7 +39,6 @@
       color-scheme: dark;
       --bg: #0f0f11;
       --text: #f0f0f4;
-      --muted: #828286;
       --line: #4c4c50;
       --blue: #3551f3;
     }
@@ -35,6 +57,7 @@
       gap: 28px;
     }
     .brand {
+      margin: 0;
       display: flex; align-items: center; gap: 10px;
       font-size: 15px; font-weight: 600;
     }
@@ -44,7 +67,6 @@
       border-radius: 10px;
       box-shadow: 0 0 0 1px #2a2a2e;
     }
-    p { margin: 0; text-align: center; color: var(--muted); font-size: 15px; line-height: 1.7; max-width: 640px; }
     .my { font-family: "Noto Sans Myanmar", sans-serif; }
     .buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
     .btn {
@@ -55,25 +77,19 @@
     .btn:hover { background: rgba(255,255,255,.05); }
     .btn.primary { border-color: var(--blue); }
     .btn.primary:hover { background: rgba(53,81,243,.12); }
-    .meta { font-size: 12px; }
-    .meta a { color: var(--muted); }
     @media (max-width: 480px) {
       .btn { flex: 1; text-align: center; padding: 10px 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="brand"><img src="logo.png" alt="" width="28" height="28"> Ghostty <span class="my">မြန်မာ</span></div>
+  <h1 class="brand"><img src="logo.png" alt="" width="28" height="28"> Ghostty <span class="my" lang="my">မြန်မာ</span></h1>
 
   <img class="shot" src="screenshot.png" width="1032" height="602" alt="Ghostty terminal window showing Myanmar text in commands, output, and file names.">
-
-  <p>A fork of Ghostty that renders Myanmar (Burmese) Unicode text correctly, with stacked consonants, vowel signs, and medials.<br><span class="my">မြန်မာစာကို မှန်မှန်ကန်ကန် ပြသပေးသော Terminal</span></p>
 
   <div class="buttons">
     <a class="btn primary" href="Ghostty.dmg" download>Download</a>
     <a class="btn" href="https://github.com/saturngod/ghostty">GitHub</a>
   </div>
-
-  <p class="meta">macOS 13+ · Apple silicon &amp; Intel · 37 MB · Based on <a href="https://ghostty.org">Ghostty</a></p>
 </body>
 </html>
