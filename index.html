@@ -67,7 +67,7 @@
       width: 100%; max-width: 760px;
       aspect-ratio: 1032 / 602;
       overflow: hidden;
-      background: radial-gradient(ellipse at center, #191a2c 0%, var(--bg) 72%);
+      background: var(--bg);
     }
     .character-art canvas { width: 100%; height: 100%; display: block; }
     .source { color: #a6a6ad; font-size: 14px; text-underline-offset: 4px; }
@@ -131,13 +131,15 @@
     </section>
   </nav>
   <a class="source" href="https://github.com/saturngod/ghostty">View on GitHub</a>
+  <script src="ghost-frames.js"></script>
   <script>
     (() => {
       const canvas = document.getElementById('myanmar-ghost');
       const context = canvas.getContext('2d');
       if (!context) return;
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const letters = Array.from('ကခဂငစဆဇညတထဒနပဖဗမယရလဝသဟအ');
+      const frames = window.myanmarGhostFrames;
+      if (!frames?.length) return;
       let paused = reducedMotion.matches;
       let frame = 0;
       let lastTime = 0;
@@ -147,35 +149,30 @@
 
       function draw() {
         context.clearRect(0, 0, width, height);
-        const columns = 64;
-        const cell = width / columns;
-        const rows = Math.floor(height / (cell * 1.25));
-        context.font = `${cell * 0.94}px "Noto Sans Myanmar", sans-serif`;
+        if (!width || !height) return;
+        const rows = frames[Math.floor(phase / 0.031) % frames.length];
+        const cell = width / 104;
+        const line = height / 43;
+        context.font = `${Math.min(cell * 1.18, line * 0.85)}px "Noto Sans Myanmar", sans-serif`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        for (let row = 0; row < rows; row++) {
-          for (let col = 0; col < columns; col++) {
-            const x = (col - columns / 2) / 18;
-            const y = (row - rows / 2) / 13 - Math.sin(phase) * 0.055;
-            const sway = Math.sin(phase * 0.7 + y * 2) * 0.055;
-            const gx = x - sway;
-            const dome = gx * gx + (y + 0.22) ** 2 < 0.69 ** 2 && y < -0.2;
-            const hem = 0.69 + Math.cos(gx * 17 + phase * 2) * 0.065;
-            const body = Math.abs(gx) < 0.69 && y >= -0.22 && y < hem;
-            if (!dome && !body) continue;
-            const eye = ((gx - 0.25) / 0.12) ** 2 + ((y + 0.13) / 0.17) ** 2 < 1 ||
-              ((gx + 0.25) / 0.12) ** 2 + ((y + 0.13) / 0.17) ** 2 < 1;
-            if (eye) continue;
-            const light = 65 + 20 * Math.sin(gx * 2 - y * 2 + phase);
-            context.fillStyle = `hsl(${235 + y * 22}, 85%, ${light}%)`;
-            const index = (row * 7 + col * 11 + Math.floor(phase * 2)) % letters.length;
-            context.fillText(letters[index], (col + 0.5) * cell, (row + 0.5) * cell * 1.25);
-          }
-        }
+        rows.forEach((segments, row) => {
+          let column = 0;
+          segments.forEach(([text, outline]) => {
+            context.fillStyle = outline ? '#7289ff' : '#e8e9f3';
+            for (const letter of text) {
+              if (letter !== ' ') {
+                context.fillText(letter, (column + 2.5) * cell, (row + 1.5) * line, cell * 1.15);
+              }
+              column++;
+            }
+          });
+        });
       }
 
       function tick(time) {
-        if (time - lastTime >= 80) {
+        // Cap at 30 fps; elapsed time keeps the float consistent across displays.
+        if (!lastTime || time - lastTime >= 1000 / 30) {
           phase += lastTime ? Math.min(time - lastTime, 100) / 1000 : 0;
           lastTime = time;
           draw();
